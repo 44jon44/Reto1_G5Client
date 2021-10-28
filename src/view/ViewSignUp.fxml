@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="paneSignIn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SignUpController">
    <children>
       <Label fx:id="lblUser" layoutX="17.0" layoutY="63.0" prefHeight="20.0" prefWidth="59.0" text="Usuario">
          <font>
@@ -36,7 +35,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lblError" layoutX="226.0" layoutY="33.0" prefHeight="21.0" prefWidth="277.0" />
+      <Label fx:id="lblError" layoutX="142.0" layoutY="26.0" prefHeight="21.0" prefWidth="295.0" />
       <Separator layoutX="14.0" orientation="VERTICAL" prefHeight="480.0" prefWidth="0.0" />
       <TextField fx:id="tfUser" layoutX="142.0" layoutY="58.0" prefHeight="30.0" prefWidth="295.0" />
       <Separator layoutX="136.0" layoutY="-5.0" orientation="VERTICAL" prefHeight="487.0" prefWidth="6.0" />
@@ -65,7 +64,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lblRepeatPassword" layoutX="448.0" layoutY="295.0" prefHeight="31.0" prefWidth="180.0">
+      <Label fx:id="lblErrorRepeatPassword" layoutX="448.0" layoutY="295.0" prefHeight="31.0" prefWidth="180.0">
          <font>
             <Font size="14.0" />
          </font>
