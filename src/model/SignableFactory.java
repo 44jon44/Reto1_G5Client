@@ -6,9 +6,14 @@
 package model;
 
 /**
- *
- * @author alex
+ * @author ibai ,  jon 
  */
 public class SignableFactory {
-    
+   /**
+     * @return  la implementacion del lado cliente
+    */ 
+    public static Signable getClientImplementation () {     
+        return new   SignableImplementation();
+     
+}
 }

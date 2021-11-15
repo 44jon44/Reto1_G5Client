@@ -5,14 +5,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="logOutPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LogOutController">
    <children>
-      <Label id="lbUsuario" layoutX="201.0" layoutY="145.0" prefHeight="35.0" prefWidth="198.0" text="Bienvenido, User" textAlignment="CENTER">
+      <Label fx:id="lbUsuario" layoutX="176.0" layoutY="134.0" prefHeight="35.0" prefWidth="328.0" text="Bienvenido," textAlignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Button id="btnCerrarSesion" layoutX="138.0" layoutY="242.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Cerrar Sesion" />
-      <Button id="btnSalir" layoutX="352.0" layoutY="242.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Salir" />
+      <Button fx:id="btnCerrarSesion" layoutX="138.0" layoutY="242.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Cerrar Sesion" />
+      <Button fx:id="btnSalir" layoutX="352.0" layoutY="242.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Salir" />
    </children>
 </Pane>
