@@ -5,14 +5,24 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="logOutPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LogOutController">
+<Pane fx:id="logOutPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LogOutController">
    <children>
-      <Label fx:id="lbUsuario" layoutX="176.0" layoutY="134.0" prefHeight="35.0" prefWidth="328.0" text="Bienvenido," textAlignment="CENTER">
+      <Label fx:id="lbBienvenido" alignment="CENTER" layoutX="128.0" layoutY="71.0" prefHeight="35.0" prefWidth="328.0" text="BIENVENIDO" textAlignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="btnCerrarSesion" layoutX="138.0" layoutY="242.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Cerrar Sesion" />
-      <Button fx:id="btnSalir" layoutX="352.0" layoutY="242.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Salir" />
+      <Button fx:id="btnCerrarSesion" layoutX="128.0" layoutY="352.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Cerrar Sesion" />
+      <Button fx:id="btnSalir" layoutX="347.0" layoutY="352.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Salir" />
+      <Label fx:id="lblNombre" layoutX="128.0" layoutY="152.0" prefHeight="27.0" prefWidth="328.0" text="Nombre: ">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblEmail" layoutX="128.0" layoutY="204.0" prefHeight="27.0" prefWidth="328.0" text="   e-mail: ">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

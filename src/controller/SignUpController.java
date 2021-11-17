@@ -21,7 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import model.Signable;
 import model.SignableFactory;
@@ -123,7 +122,6 @@ public class SignUpController {
         tfPassword.setPromptText("P4$$w0rd");
         tfPassword.focusedProperty().addListener(this::tfPasswordFocusChanged);
         tfPassword.textProperty().addListener(this::tfPasswordTextChanged);
-        //tfRepeatPassword.focusedProperty().addListener(this::tfRepeatPasswordFocusChanged);
         tfRepeatPassword.textProperty().addListener(this::tfRepeatPasswordTextChanged);
         //Handler del evento de pulsar el boton de "Registrarse"
         btnSingUp.setOnAction(this::signUp);
@@ -133,9 +131,9 @@ public class SignUpController {
 
     @FXML
     private void signIn(ActionEvent event) {
-        LOG.info("Volviendo a ViewSignIn...");
         try
         {
+            LOG.info("Entrando en la ventana ViewSignIn");
             //getResource tienes que añadir la ruta de la ventana que quieres iniciar.
             FXMLLoader signUp = new FXMLLoader(getClass().getResource("/view/ViewSignIn.fxml"));
             Parent root;
@@ -160,11 +158,15 @@ public class SignUpController {
             stage.hide();
         } catch (IOException ex)
         {
-            LOG.log(Level.SEVERE, null, ex);
+            LOG.log(Level.SEVERE, "Se ha producido un error de lectura/escritura");
+        } catch (IllegalStateException ex)
+        {
+            LOG.log(Level.SEVERE, "No se ha podido cargar la vista");
         }
     }
 
     private void signUp(ActionEvent event) {
+        LOG.info("Se ha pulsado el botón de Registrarse");
         validateTfRepeatPassword(tfPassword.getText(), tfRepeatPassword.getText());
         //comprobamos si todos los campos son correctos y si lo son registramos al usuario
         if (validFields())
@@ -176,6 +178,7 @@ public class SignUpController {
                 boolean signUpCorrect = signable.signUp(userSignUp);
                 if (signUpCorrect)
                 {
+                    LOG.info("Entrando en la ventana de ViewSignIn");
                     signIn(event);
                 }
             } catch (LoginExistException ex)
@@ -200,7 +203,7 @@ public class SignUpController {
         if (oldValue)
         {//foco perdido 
             tfPasswordIsValid = validateTfPassword(tfPassword.getText());
-            //si la contarseña no es válida...
+            //si la contraseña no es válida...
             if (!tfPasswordIsValid)
             {
                 tfPassword.setStyle("-fx-text-inner-color: red;");

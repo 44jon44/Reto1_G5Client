@@ -42,7 +42,10 @@ public class LogOutController {
     private Button btnCerrarSesion;
     //Label que muestra un saludo al usuario que ha iniciado sesion
     @FXML
-    private Label lbUsuario;
+    private Label lblNombre;
+    
+    @FXML
+    private Label lblEmail;
     /**
      * Metodo que inicializa la ventana  
      * @param root 
@@ -134,12 +137,12 @@ public class LogOutController {
         signInStage.showAndWait();
     }
     /**
-     * Metodo que muestra un saludo en el label Usuario
+     * Método que muestra el nombre completo y el email del usuario que ha iniciado sesión
      * @param user objeto que es devuelto de la base de datos
      */
     public void initUser(User user){  
-        lbUsuario.setText(lbUsuario.getText() + user.getFullName()); 
-   
+        lblNombre.setText(lblNombre.getText() + user.getFullName());
+        lblEmail.setText(lblEmail.getText() + user.getEmail()); 
     }
 }
 
