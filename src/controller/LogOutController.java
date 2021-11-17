@@ -30,44 +30,44 @@ import model.User;
  */
 public class LogOutController {
 
-    // un logger que nos informara mediante la terminal
+    //un logger que nos informara mediante la terminal
     private static final Logger LOG = Logger.getLogger(LogOutController.class.getName());
     //declaramos los stage de la  ventanas que vamos a manipular   
     private Stage signInStage;
-    // Button que cierra la aplicacion
+    // Button que cierra la aplicación
     @FXML
     private Button btnSalir;
-    //Button que cierra la sesion y abre la ventana SignIn
+    //botón que cierra la sesión y abre la ventana SignIn
     @FXML
     private Button btnCerrarSesion;
-    //Label que muestra un saludo al usuario que ha iniciado sesion
+    //Label que muestra un saludo al usuario que ha iniciado sesión
     @FXML
     private Label lblNombre;
     
     @FXML
     private Label lblEmail;
     /**
-     * Metodo que inicializa la ventana  
+     * Método que inicializa la ventana  
      * @param root 
      */
     public void initStage(Parent root) {
-        
-        LOG.info("Init Stage de la VentanaLogOut");
+        LOG.info("Se ha entrado en la ventana UserView");
         btnSalir.setOnAction(this::exit);
         btnCerrarSesion.setOnAction(this::logOut);
     }
     /**
-     * El usuario cierra la aplicacion
-     * @param event evento de pulsacion del boton salir
+     * El usuario cierra la aplicación
+     * @param event evento de pulsación del botón salir
      */
     @FXML
     public void exit(ActionEvent event) {
-        //Se crea objeto Alert de tipo confirmacion
+        LOG.info("Se ha pulsado el botón Salir");
+        //Se crea objeto Alert de tipo confirmación
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         //Se añaden los textos a la ventana alert
         alert.setTitle("Exit");
-        alert.setHeaderText("Confirmacion");
-        alert.setContentText("¿Desea cerrar la aplicacion?");
+        alert.setHeaderText("Confirmación");
+        alert.setContentText("¿Desea cerrar la aplicación?");
         //La ventana se hace no redimensionable
         alert.setResizable(false);
         //La ventana se muestra
@@ -88,20 +88,18 @@ public class LogOutController {
      */
     @FXML
     public void logOut(ActionEvent event) {
+        LOG.info("Se ha pulsado el botón Cerrar Sesión");
         //Se crea objeto Alert de tipo confirmacion
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         //Se añaden los textos a la ventana alert
         alert.setTitle("Log Out");
-        alert.setHeaderText("Confirmacion");       
-        alert.setContentText("¿Desea cerrar la sesion?");
+        alert.setHeaderText("Confirmación");       
+        alert.setContentText("¿Desea cerrar la sesión?");
         //La ventana se hace no redimensionable
         alert.setResizable(false);
         //La ventana se muestra
-        
         //Se instancia un objeto contendor Optional, 
         Optional<ButtonType> result = alert.showAndWait();
-       
-
         if (result.get() == ButtonType.OK) {
             try {
                 //Se cierra la ventana userView
@@ -115,11 +113,12 @@ public class LogOutController {
         }
     }
     /**
-     * Metodo que abre la ventana signIN
+     * Método que abre la ventana signIn
      * 
      * @throws IOException 
      */
     private void openSignIn() throws IOException {
+        LOG.info("Se ha pulsado el botón  Cerrar Sesión");
         //getResource tienes que añadir la ruta de la ventana que quieres iniciar.
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ViewSignIn.fxml"));
         Parent root = (Parent) loader.load();

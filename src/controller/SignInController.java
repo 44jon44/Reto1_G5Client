@@ -7,7 +7,7 @@ package controller;
 
 import exceptions.*;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -15,7 +15,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -23,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Signable;
 import model.SignableFactory;
 import model.User;
@@ -31,13 +34,9 @@ import model.User;
  * @author ibai arriola
  */
 public class SignInController {
-
-    //Hasta que este la BD Lista de usuarios de prueba para ejercicios
-    private ArrayList<User> usuarios = new ArrayList<User>();
-
-    // un logger que nos informara mediante la terminal
+    // un logger que nos informará mediante la terminal
     private static final Logger LOG = Logger.getLogger(SignInController.class.getName());
-    //declaramos los componentes de la ventana  que manipularemos a continuacion
+    //declaramos los componentes de la ventana  que manipularemos a continuación
     private Stage signInStage;
     // textField  donde añadimos  el usuario
     @FXML
@@ -45,19 +44,19 @@ public class SignInController {
     // textField  donde añadimos  la contraseña
     @FXML
     private PasswordField tfPassword;
-    // button que inicia la sesion
+    // botón que inicia la sesión
     @FXML
-    private Button btnSignIN;
+    private Button btnSignIn;
     // un  label que visualiza los diferentes errores
     @FXML
-    private AnchorPane panelSignIN;
+    private AnchorPane panelSignIn;
     @FXML
     private Label lblError;
-    //un hyperlink que llama a la ventana modal viewSingUP
+    //un hyperlink que llama a la ventana viewSingUp
     @FXML
-    private Hyperlink hyperSignUP;
+    private Hyperlink hyperSignUp;
 
-    //getter y setter del state SingIN
+    //getter y setter del state SingIn
     public Stage getSignInStage() {
         return signInStage;
     }
@@ -66,30 +65,32 @@ public class SignInController {
         this.signInStage = signInStage;
     }
     
-    public void initStage(Parent root) throws IOException {
-        LOG.info("Init Stage de la VentanaSignIN");
-        //Llamamos al metodo que se encarga del comportamiento del boton
+    public void initStage(Parent root,Stage stage) throws IOException {
+        LOG.info("Entrando en la ventana ViewSignIn");
+        //Llamamos al metodo que se encarga del comportamiento del botón
         disableSignInBtn();
-        //llamar al metodo de iniciar sesion cuando pulsas el boton
-        btnSignIN.setOnAction(this::signIN);
-        //llamar al metodo de  resgistrarse cuando pulsas el hyperEnlace
-        // hyperSignUP.setOnAction(this::signUp);
+        //llamar al método de iniciar sesión cuando pulsas el botón
+        btnSignIn.setOnAction(this::signIn);
+        //llamar al método de  resgistrarse cuando pulsas el hiperenlace
+        hyperSignUp.setOnAction(this::signUp);
+        stage.setOnCloseRequest(this::windowClose);
     }
 
     /**
-     * El usuario podra iniciar la sesion
+     * El usuario podrá iniciar la sesión
      *
-     * @param event el evento de activacion del boton
+     * @param event el evento de activación del botón
      */
     @FXML
-    private void signIN(ActionEvent event) {
+    private void signIn(ActionEvent event) {
+        LOG.info("Se ha pulsado el botón de Iniciar Sesión");
         //usario ficticio hasta tener bd
         Signable signable = SignableFactory.getClientImplementation();
         User user = new User();
         user.setLogin(tfUser.getText());
         user.setPassword(tfPassword.getText());
         try {
-            User usuario_servidor = signable.signIn(user);
+            User usuarioServidor = signable.signIn(user);
             //user = getClientImplementation().signIn(user);
             //getResource tienes que añadir la ruta de la ventana que quieres iniciar.
             FXMLLoader signIn = new FXMLLoader(getClass().getResource("/view/UserView.fxml"));
@@ -99,30 +100,30 @@ public class SignInController {
             Scene UserViewScene = new Scene(root);
             //creamos un nuevo escenario para la nueva ventana
             signInStage = new Stage();
-            //definimos como modal la nueva ventana
+            //indicamos que la nueva ventana no es modal
             signInStage.initModality(Modality.NONE);
             //añadimos la escena en el stage
             signInStage.setScene(UserViewScene);
-            //por defecto no podra redimensionarse
+            //por defecto no podrá redimensionarse
             signInStage.setResizable(false);
-            //mostramos la ventana modal mientras la actual se queda esperando
+            //mostramos la ventana de UserView
             LogOutController controler = (LogOutController) signIn.getController();
             controler.initStage(root);
             //enviamos el usuario devuelto por nuestro servidor para llevarlo
             // a la ventana UserView
-             controler.initUser(usuario_servidor);
+            controler.initUser(usuarioServidor);
             signInStage.show();
-            panelSignIN.getScene().getWindow().hide();
+            panelSignIn.getScene().getWindow().hide();
             
         } catch (ConnectionNotAvailableException ex) {
             lblError.setText(ex.getMessage());
-            LOG.log(Level.SEVERE, "no hay conexiones");
+            LOG.log(Level.SEVERE, "Error, no hay conexiones disponibles");
         } catch (LoginNotFoundException ex) {
             lblError.setText(ex.getMessage());
-            LOG.log(Level.SEVERE, "error ,el login no coincide con el de la bd");
+            LOG.log(Level.SEVERE, "El usuario introducido no existe");
         } catch (PasswordNotFoundException ex) {
             lblError.setText(ex.getMessage());
-            LOG.log(Level.SEVERE, "Error,  el password no coincide con el de la bd");
+            LOG.log(Level.SEVERE, "La contraseña no es correcta");
         } catch (Exception ex) {
             lblError.setText("No se ha podido establecer conexión");
             LOG.log(Level.SEVERE, "No se ha podido establecer conexión");
@@ -130,12 +131,13 @@ public class SignInController {
     }
 
     /**
-     * Abre una ventana modal de signUP que que el usuario se pueda registrar
+     * Abre una ventana modal de signUp para que el usuario se pueda registrar
      *
-     * @param event el evento de activacion del enlace
+     * @param event el evento de activación del enlace
      */
     @FXML
     private void signUp(ActionEvent event) {
+        LOG.info("Se ha pulsado el hiperenlace Regístrate");
         try {
             //getResource tienes que añadir la ruta de la ventana que quieres iniciar.
             FXMLLoader signUp = new FXMLLoader(getClass().getResource("/view/ViewSignUp.fxml"));
@@ -145,11 +147,9 @@ public class SignInController {
             Scene UserViewScene = new Scene(root);
             //creamos un nuevo escenario para la nueva ventana
             Stage logout = new Stage();
-            //definimos como modal la nueva ventana
-            //logout.initModality(Modality.APPLICATION_MODAL);
             //añadimos la escena en el stage
             logout.setScene(UserViewScene);
-            //por defecto no podra redimensionarse
+            //por defecto no podrá redimensionarse
             logout.setResizable(false);
             //cargamos el controlador de la ventana
             SignUpController controller = signUp.getController();
@@ -157,21 +157,35 @@ public class SignInController {
             //mostramos la ventana modal mientras la actual se queda esperando
             logout.show();
             //cerramos la ventana
-            panelSignIN.getScene().getWindow().hide();
+            panelSignIn.getScene().getWindow().hide();
         } catch (IOException ex) {
-            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
+           LOG.log(Level.SEVERE, "Se ha producido un error al cargar el fichero FXML");
         }
     }
 
     /**
-     * El metodo disableSigInBtn se encargara de comportamiento del boton el
-     * boton por defecto estara desabilitado mientras no se informen los campos
-     * TfUser y Tf Password
+     * El método disableSigInBtn se encargará de comportamiento del botón de "Iniciar Sesión".
+     * El botón por defecto estará deshabilitado mientras no se informen los campos "Usuario" y "Contraseña"
      */
     private void disableSignInBtn() {
-        LOG.info("El boton esta desabilitado hasta informar los campos");
-        btnSignIN.disableProperty().bind(tfUser.textProperty().isEmpty()
+        LOG.info("El botón está desabilitado hasta que se informen los campos");
+        btnSignIn.disableProperty().bind(tfUser.textProperty().isEmpty()
                 .or(tfPassword.textProperty().isEmpty()
                 ));
     }
+    
+    private void windowClose(WindowEvent event){
+        LOG.info("Se ha pulsado el botón cerrar de la ventana");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("Confirmación");
+        alert.setContentText("¿Desea cerrar la ventana?");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (ButtonType.OK != result.get()) {
+            event.consume();
+        } else {
+            LOG.info("Se ha cerrado la ventana ViewSignIN");
+        }
+    }
+    
 }

@@ -12,8 +12,8 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="btnCerrarSesion" layoutX="128.0" layoutY="352.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Cerrar Sesion" />
-      <Button fx:id="btnSalir" layoutX="347.0" layoutY="352.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Salir" />
+      <Button fx:id="btnCerrarSesion" layoutX="130.0" layoutY="352.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Cerrar Sesión" />
+      <Button fx:id="btnSalir" layoutX="380.0" layoutY="352.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Salir" />
       <Label fx:id="lblNombre" layoutX="128.0" layoutY="152.0" prefHeight="27.0" prefWidth="328.0" text="Nombre: ">
          <font>
             <Font size="18.0" />

@@ -18,9 +18,11 @@ import javafx.stage.Stage;
  * * @author ibai , jon , alex , markel
  */
 public class ClientApplication extends Application {
+
     private static final Logger LOG = Logger.getLogger(ClientApplication.class.getName());
+
     /**
-     * @param signInStage parametro utilizado para
+     * @param signInStage parámetro utilizado para
      * @throws Exception captura y lanza cualquier posible error.
      */
     @Override
@@ -31,17 +33,18 @@ public class ClientApplication extends Application {
         Parent root = (Parent) signIn.load();
         //Creamos la escena para la ventana SignIn
         Scene signInScene = new Scene(root);
-        //Despues Asociamos nuestra primaryStage con la escena 
+        //Después Asociamos nuestra primaryStage con la escena
         signInStage.setScene(signInScene);
-       //La ventana no podra redimensioanar
+        //La ventana no podra redimensionar
         signInStage.setResizable(false);
         //un llamamiento a la clase SignIncontroler
         SignInController controller = ((SignInController) signIn.getController());
         //inicias el initStage
-        controller.initStage(root);
+        controller.initStage(root,signInStage);
         //Finalmente  mostramos nuestra ventana
         signInStage.show();
     }
+
     public static void main(String[] args) {
         launch(args);
     }

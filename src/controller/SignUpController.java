@@ -107,7 +107,7 @@ public class SignUpController {
      * @throws IOException
      */
     public void initStage(Parent root) throws IOException {
-        LOG.info("initStage de la ventana ViewSignUp");
+        LOG.info("Entrando en la ventana ViewSignUp");
         tfUser.requestFocus();
         //Establecemos los handlers de los eventos de la ventana
         tfUser.setPromptText("usuario");
@@ -122,6 +122,7 @@ public class SignUpController {
         tfPassword.setPromptText("P4$$w0rd");
         tfPassword.focusedProperty().addListener(this::tfPasswordFocusChanged);
         tfPassword.textProperty().addListener(this::tfPasswordTextChanged);
+        tfRepeatPassword.setPromptText("P4$$w0rd");
         tfRepeatPassword.textProperty().addListener(this::tfRepeatPasswordTextChanged);
         //Handler del evento de pulsar el boton de "Registrarse"
         btnSingUp.setOnAction(this::signUp);
@@ -150,7 +151,7 @@ public class SignUpController {
             logout.setResizable(false);
             //
             SignInController controller = signUp.getController();
-            controller.initStage(root);
+            controller.initStage(root, logout);
             //mostramos la ventana modal mientras la actual se queda esperando
             logout.show();
             //cerramos la ventana
@@ -184,12 +185,15 @@ public class SignUpController {
             } catch (LoginExistException ex)
             {
                 lblError.setText(ex.getMessage());
+                LOG.log(Level.SEVERE, "El usuario ya existe");
             } catch (ConnectionNotAvailableException ex)
             {
                 lblError.setText(ex.getMessage());
+                LOG.log(Level.SEVERE, "Error, no hay conexiones disponibles");
             } catch (Exception ex)
             {
                 lblError.setText("Se ha producido un error");
+                LOG.log(Level.SEVERE, "Se ha producido un error");
             }
         } else
         {
