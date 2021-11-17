@@ -152,7 +152,7 @@ public class SignUpController {
             logout.setResizable(false);
             //
             SignInController controller = signUp.getController();
-            controller.initStage(root);
+            //controller.initStage(root,stageSignUp);
             //mostramos la ventana modal mientras la actual se queda esperando
             logout.show();
             //cerramos la ventana

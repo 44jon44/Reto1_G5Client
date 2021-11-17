@@ -38,7 +38,7 @@ public class LogOutControllerTest extends ApplicationTest {
         clickOn("#tfUser");
         write("ibai");
         clickOn("#tfPassword");
-        write("abcd*1234");
+        write("1");
         clickOn("#btnSignIN");
         verifyThat("#btnCerrarSesion", isEnabled());
         verifyThat("#btnSalir", isEnabled());

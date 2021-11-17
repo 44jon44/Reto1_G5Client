@@ -129,8 +129,11 @@ public class LogOutController {
         //Asociamos el stage con nuestra escena
         signInStage.setScene(SignInScene);
         //La ventana no se podra redimensonar
+        
         signInStage.setResizable(false);
         //La ventana se muestra
+         SignInController controller = loader.getController();
+          controller.initStage(root,signInStage);
         signInStage.showAndWait();
     }
     /**
