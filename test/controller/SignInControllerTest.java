@@ -117,7 +117,7 @@ public class SignInControllerTest extends ApplicationTest {
         clickOn("#tfUser");
         write("ibai");
         clickOn("#tfPassword");
-        write("1");
+        write("Abcd*1234");
         clickOn("#btnSignIN");
         verifyThat("#logOutPane", isVisible());
         clickOn("#btnCerrarSesion");
