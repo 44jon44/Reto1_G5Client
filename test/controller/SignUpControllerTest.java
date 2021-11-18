@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,6 +9,7 @@ package controller;
 import clientapp.ClientApplication;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
@@ -33,8 +35,8 @@ public class SignUpControllerTest extends ApplicationTest {
      * @param stage Primary Stage object
      * @throws Exception If there is any error
      */
-    @Override
-    public void start(Stage stage) throws Exception {
+    @Before
+    public void start() throws Exception {
         FxToolkit.registerPrimaryStage();
         FxToolkit.setupApplication(ClientApplication.class);
     }
@@ -43,14 +45,14 @@ public class SignUpControllerTest extends ApplicationTest {
      * Test que comprueba que todos los campos estan habilitados
      */
     @Test
-    public void test1_InicioVentana() {
+    public void testA_InicioVentana() {
         clickOn("#hyperSignUP");
         verifyThat("#tfFullName", TextInputControlMatchers.hasText(""));
         verifyThat("#tfUser", TextInputControlMatchers.hasText(""));
         verifyThat("#tfEmail", TextInputControlMatchers.hasText(""));
         verifyThat("#tfPassword", TextInputControlMatchers.hasText(""));
         verifyThat("#tfRepeatPassword", TextInputControlMatchers.hasText(""));
-        verifyThat("#btnSingUp", isDisabled());
+        verifyThat("#btnSingUp", isEnabled());
 
     }
 
@@ -58,53 +60,19 @@ public class SignUpControllerTest extends ApplicationTest {
      * Test para comprobar que el hyperlynk funciona correctamente
      */
     @Test
-    public void test2_HyperlinkInicioSesion() {
+    public void testB_HyperlinkInicioSesion() {
         clickOn("#hyperSignUP");
-        clickOn("#linkLogin");
+        clickOn("#hyperSignIn");
         verifyThat("#panelSignIN", isVisible());
     }
 
-    /**
-     * Test para comprobar que el boton esta desabilitado hasta que se informen
-     * todos los campos
-     */
-    @Test
-    public void test3_BotonCrearCuentaDesabilitado() {
-        clickOn("#hyperSignUP");
-        clickOn("#tfFullName");
-        write("username");
-        verifyThat("#btnSingUp", isDisabled());
-        push(KeyCode.CONTROL, KeyCode.A);
-        eraseText(1);
-        clickOn("#tfUser");
-        write("user");
-        verifyThat("#btnSingUp", isDisabled());
-        push(KeyCode.CONTROL, KeyCode.A);
-        eraseText(1);
-        clickOn("#tfEmail");
-        write("username@gmail.com");
-        verifyThat("#btnSingUp", isDisabled());
-        push(KeyCode.CONTROL, KeyCode.A);
-        eraseText(1);
-        clickOn("#tfPassword");
-        write("username$1");
-        verifyThat("#btnSingUp", isDisabled());
-        push(KeyCode.CONTROL, KeyCode.A);
-        eraseText(1);
-        clickOn("#tfRepeatPassword");
-        write("username$1");
-        verifyThat("#btnSingUp", isDisabled());
-        push(KeyCode.CONTROL, KeyCode.A);
-        eraseText(1);
-        verifyThat("#btnSingUp", isDisabled());
-    }
 
     /**
      * Test para comprobar que el boton se habilitara cuando se informen todos
      * los campos
      */
     @Test
-    public void test4_BotonCrearCuentaHabilitado() {
+    public void testD_BotonCrearCuentaHabilitado() {
         clickOn("#hyperSignUP");
         clickOn("#tfFullName");
         write("username");
@@ -124,7 +92,7 @@ public class SignUpControllerTest extends ApplicationTest {
      * venta de logout
      */
     @Test
-    public void test5_TodoCorrecto() {
+    public void testE_TodoCorrecto() {
         clickOn("#hyperSignUP");
         clickOn("#tfFullName");
         write("username");
@@ -133,9 +101,9 @@ public class SignUpControllerTest extends ApplicationTest {
         clickOn("#tfEmail");
         write("username@gmail.com");
         clickOn("#tfPassword");
-        write("username$1");
+        write("Username$1");
         clickOn("#tfRepeatPassword");
-        write("username$1");
+        write("Username$1");
         verifyThat("#btnSingUp", isVisible());
         clickOn("#btnSingUp");
         verifyThat("#logOutPane", isVisible());
@@ -145,7 +113,7 @@ public class SignUpControllerTest extends ApplicationTest {
      * Test para comprobar que ya existe un usuario con el mismo login
      */
     @Test
-    public void test6_UsuarioYaExiste() {
+    public void testF_UsuarioYaExiste() {
         clickOn("#hyperSignUP");
         clickOn("#tfFullName");
         write("username");
@@ -165,7 +133,7 @@ public class SignUpControllerTest extends ApplicationTest {
      * Test para comprobar que el formato de email no es valido
      */
     @Test
-    public void test7_EmailNoValido() {
+    public void testG_EmailNoValido() {
         clickOn("#hyperSignUP");
         clickOn("#tfFullName");
         write("username");
@@ -178,14 +146,14 @@ public class SignUpControllerTest extends ApplicationTest {
         clickOn("#tfRepeatPassword");
         write("username$1");
         clickOn("#btnSingUp");
-        verifyThat("#lblErrorEmail", LabeledMatchers.hasText("l"));
+        verifyThat("#lblErrorEmail", TextInputControlMatchers.hasText("Email inválido"));
     }
 
     /**
      * Test para comprobar que la contraseña es muy corta, (minimo 8 caracteres)
      */
     @Test
-    public void test8_ContraseñaMuyCorto() {
+    public void testH_ContraseñaMuyCorto() {
         clickOn("#hyperSignUP");
         clickOn("#tfFullName");
         write("username");
@@ -195,10 +163,8 @@ public class SignUpControllerTest extends ApplicationTest {
         write("username@gmail.com");
         clickOn("#tfPassword");
         write("u");
-        clickOn("#tfRepeatPassword");
-        write("u");
         clickOn("#btnSingUp");
-        verifyThat("#lblErrorPassword", LabeledMatchers.hasText("l"));
+        verifyThat("#lblErrorPassword", TextInputControlMatchers.hasText("Longitud mínima de 8"));
     }
 
     /**
@@ -207,14 +173,8 @@ public class SignUpControllerTest extends ApplicationTest {
      *
      */
     @Test
-    public void test9_RepetirContraseñaIncorrecto() {
-        clickOn("#hyperSignUP");
-        clickOn("#tfFullName");
-        write("user");
-        clickOn("#tfUser");
-        write("user");
-        clickOn("#tfEmail");
-        write("username@gmail.com");
+    public void testI_RepetirContraseñaIncorrecto() {
+        clickOn("#hyperSignUP");    
         clickOn("#tfPassword");
         write("username$1");
         clickOn("#tfRepeatPassword");
@@ -222,6 +182,30 @@ public class SignUpControllerTest extends ApplicationTest {
         clickOn("#btnSingUp");
         verifyThat("#lblErrorRepeatPassword", LabeledMatchers.hasText("l"));
     }
+
+
+ @Test
+    public void testJ_ValidarEmailCorrecto() {
+        clickOn("#hyperSignUP");
+        clickOn("#tfEmail");
+        write("jonmadi21@gm.ail.com");
+        clickOn("#tfFullName");
+        verifyThat("#lblErrorEmail", TextInputControlMatchers.hasText(""));
+    }
+
+    @Test
+    public void testK_ValidarEmailCorto() {
+        clickOn("#hyperSignUP");
+        clickOn("#tfEmail");
+        write("jonmadi21@gmail.c");
+        verifyThat("#lblErrorEmail", TextInputControlMatchers.hasText("Email inválido"));
+    }
+
+    @Test
+    public void testL_ValidarEmailDobleArroba() {
+        clickOn("#hyperSignUP");
+        clickOn("#tfEmail");
+        write("jonmadi21@@gmail.com");
+        verifyThat("#lblErrorEmail", TextInputControlMatchers.hasText("Email inválido"));
+    }
 }
-
-

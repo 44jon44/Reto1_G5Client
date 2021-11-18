@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -111,20 +112,18 @@ public class SignUpController {
         LOG.info("initStage de la ventana ViewSignUp");
         tfUser.requestFocus();
         //Establecemos los handlers de los eventos de la ventana
-        tfUser.setPromptText("usuario");
         tfUser.focusedProperty().addListener(this::tfUserFocusChanged);
         tfUser.textProperty().addListener(this::tfUserTextChanged);
-        tfEmail.setPromptText("ejemplo@dominio.com");
         tfEmail.focusedProperty().addListener(this::tfEmailFocusChanged);
         tfEmail.textProperty().addListener(this::tfEmailTextChanged);
-        tfFullName.setPromptText("Jon Doe");
         tfFullName.focusedProperty().addListener(this::tfFullNameFocusChanged);
-        tfFullName.textProperty().addListener(this::tfFullNameTextChanged);
-        tfPassword.setPromptText("P4$$w0rd");
-        tfPassword.focusedProperty().addListener(this::tfPasswordFocusChanged);
+        tfFullName.textProperty().addListener(this::tfFullNameTextChanged);      
         tfPassword.textProperty().addListener(this::tfPasswordTextChanged);
+        tfPassword.focusedProperty().addListener(this::tfPasswordFocusChanged);
         //tfRepeatPassword.focusedProperty().addListener(this::tfRepeatPasswordFocusChanged);
         tfRepeatPassword.textProperty().addListener(this::tfRepeatPasswordTextChanged);
+        tfRepeatPassword.focusedProperty().addListener(this::tfRepeatPasswordFocusChanged);
+        //tfPassword.focusedProperty().addListener(this::tfRepeatPasswordFocusChanged);
         //Handler del evento de pulsar el boton de "Registrarse"
         btnSingUp.setOnAction(this::signUp);
         //llamar al metodo de  "Iniciar Sesión" cuando pulsas el hiperenlace
@@ -165,6 +164,7 @@ public class SignUpController {
     }
 
     private void signUp(ActionEvent event) {
+        LOG.info("Se ha pulsado el boton SignUP");
         validateTfRepeatPassword(tfPassword.getText(), tfRepeatPassword.getText());
         //comprobamos si todos los campos son correctos y si lo son registramos al usuario
         if (validFields())
@@ -176,6 +176,8 @@ public class SignUpController {
                 boolean signUpCorrect = signable.signUp(userSignUp);
                 if (signUpCorrect)
                 {
+                    LOG.info("Se ha dado de alta correctamente, abriendo la ventana de signIN");
+                    mostrarAlertInfo(event);
                     signIn(event);
                 }
             } catch (LoginExistException ex)
@@ -190,15 +192,18 @@ public class SignUpController {
             }
         } else
         {
+            LOG.info("Los campos no son correctos");
             showFieldErrors();
             transferFocusFirstInvalidField();
         }
     }
 
+
     private void tfPasswordFocusChanged(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         //lblErrorPassword.setTextFill(Paint.valueOf("RED"));
+       
         if (oldValue)
-        {//foco perdido 
+        {//foco perdido
             tfPasswordIsValid = validateTfPassword(tfPassword.getText());
             //si la contarseña no es válida...
             if (!tfPasswordIsValid)
@@ -208,19 +213,22 @@ public class SignUpController {
             }
         } else if (newValue)
         {//foco ganado
+            LOG.info("Dentro de tfPassword");
             if (tfPasswordIsValid)
             {
+                
                 lblErrorPassword.setText("");
                 lblErrorRepeatPassword.setText("");
             }
-
+           
         }
     }
 
     private void tfFullNameFocusChanged(ObservableValue observable, Boolean oldValue, Boolean newValue) {
-        //lblErrorFullName.setTextFill(Paint.valueOf("RED"));
+       
+       
         if (oldValue)
-        {//foco perdido 
+        {//foco perdido
             tfFullNameIsValid = validateTfFullName(tfFullName.getText());
             if (!tfFullNameIsValid)
             {
@@ -228,14 +236,16 @@ public class SignUpController {
                 showlblErrorFullNameMessages(tfFullName.getText());
             }
         } else if (newValue)
-        {//foco ganado
-
+        {
+            //foco ganado
+            LOG.info("Dentro de tfFullName");
         }
     }
 
     private void tfEmailFocusChanged(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+       
         if (oldValue)
-        {//foco perdido 
+        {//foco perdido
             tfEmailIsValid = validateTfEmail(tfEmail.getText());
             if (!tfEmailIsValid)
             {
@@ -244,32 +254,48 @@ public class SignUpController {
             }
         } else if (newValue)
         {//foco ganado
-
+             LOG.info("Dentro de tfEmail");
         }
     }
 
     private void tfUserFocusChanged(ObservableValue observable, Boolean oldValue, Boolean newValue) {
-        LOG.info("Dentro de tfUserFocusChanged");
+       
         if (oldValue)
-        {//foco perdido 
+        {//foco perdido
             tfUserIsValid = validateTfUser(tfUser.getText());
             if (!tfUserIsValid)
             {
                 showlblErrorUserMessages(tfUser.getText());
             }
-            LOG.info(tfUser.getText());
+            
         } else if (newValue)
         {//foco ganado
-
+            LOG.info("Dentro de tfUser");
         }
     }
 
+    private void tfRepeatPasswordFocusChanged(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+       
+        if (oldValue)
+        {//foco perdido
+            tfRepeatPasswordIsValid = validateTfUser(tfRepeatPassword.getText());
+            if (!tfRepeatPasswordIsValid)
+            {
+                showlblErrorUserMessages(tfRepeatPassword.getText());
+            }
+            LOG.info(tfRepeatPassword.getText());
+        } else if (newValue)
+        {//foco ganado
+            LOG.info("Dentro de tfRepeatPassword");
+        }
+    }
+   
     //getter de stageSignUp
     public Stage getStageSignUp() {
         return stageSignUp;
     }
 
-    //setter de 
+    //setter de
     public void setStageSignUp(Stage stageSignUp) {
         this.stageSignUp = stageSignUp;
     }
@@ -279,9 +305,10 @@ public class SignUpController {
     }
 
     private boolean validateTfEmail(String email) {
-        return Pattern.matches("\\b[a-zA-Z0-9_+-]+(?:.[a-zA-Z0-9_+-]+)*@(?:[a-zA-Z0-9-]+.)+[a-zA-Z]{2,6}\\b", email);
+       
+        //return emailCorrecto(email);
+        return Pattern.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-@][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$",email);        
     }
-
     private boolean validateTfFullName(String fullName) {
         return Pattern.matches("\\b\\p{L}+[\\p{L}\\p{Z}\\p{P}]{0,}", fullName);
     }
@@ -307,8 +334,7 @@ public class SignUpController {
         } else if (!tfPasswordIsValid)
         {
             tfPassword.requestFocus();
-        } else if (!tfRepeatPasswordIsValid)
-        {
+        }else if(!tfRepeatPasswordIsValid){
             tfRepeatPassword.requestFocus();
         }
     }
@@ -326,7 +352,6 @@ public class SignUpController {
         {
             lblErrorPassword.setText("");
             lblErrorRepeatPassword.setText("");
-            tfPassword.setStyle("-fx-text-inner-color: black;");
         }
     }
 
@@ -334,7 +359,7 @@ public class SignUpController {
         if (newValue.length() != oldValue.length())
         {
             lblErrorFullName.setText("");
-            tfFullName.setStyle("-fx-text-inner-color: black;");
+tfFullName.setStyle("-fx-text-inner-color: black;");
         }
     }
 
@@ -342,7 +367,7 @@ public class SignUpController {
         if (newValue.length() != oldValue.length())
         {
             lblErrorEmail.setText("");
-            tfEmail.setStyle("-fx-text-inner-color: black;");
+tfEmail.setStyle("-fx-text-inner-color: black;");
         }
     }
 
@@ -350,7 +375,7 @@ public class SignUpController {
         if (newValue.length() != oldValue.length())
         {
             lblErrorUser.setText("");
-            tfUser.setStyle("-fx-text-inner-color: black;");
+tfUser.setStyle("-fx-text-inner-color: black;");
         }
     }
 
@@ -423,15 +448,17 @@ public class SignUpController {
             lblErrorPassword.setText("Longitud mínima de 8");
         } else
         {
-            lblErrorPassword.setText("Contraseña inválida");
+            lblErrorPassword.setText("La contraseña debe contener"
+                    + "\n 8 caracteres,una Mayuscula \n y un caracter especial");
         }
     }
 
     private void showlblErrorRepeatPasswordMessages(String repPassword) {
-        if (tfPasswordIsValid || tfRepeatPassword.getText().trim().length() > 0)
+        if(tfPasswordIsValid)
         {
+            lblErrorPassword.setText("No coinciden");
             lblErrorRepeatPassword.setText("No coinciden");
-        } else if (repPassword.trim().length() == 0)
+        }else if (repPassword.trim().length() == 0)
         {
             lblErrorRepeatPassword.setText("Campo obligatorio");
         }
@@ -444,8 +471,17 @@ public class SignUpController {
             //si las contraseñas no coinciden...
             if (!tfRepeatPasswordIsValid)
             {
+                lblErrorPassword.setText("No coinciden");
                 lblErrorRepeatPassword.setText("No coinciden");
             }
         }
+    }
+     
+    private void mostrarAlertInfo(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Exito");
+        alert.setContentText("Te has dado de alta correctamente");
+        alert.showAndWait();
     }
 }
