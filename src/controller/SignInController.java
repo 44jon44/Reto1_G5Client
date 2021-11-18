@@ -36,7 +36,7 @@ import model.User;
  */
 public class SignInController {
 
-       //Hasta que esté la BD Lista de usuarios de prueba para ejercicios
+    //Hasta que esté la BD Lista de usuarios de prueba para ejercicios
     private ArrayList<User> usuarios = new ArrayList<User>();
 
     // un logger que nos informará mediante la terminal
@@ -79,7 +79,7 @@ public class SignInController {
         btnSignIN.setOnAction(this::signIN);
         //llamar al método de  registrarse cuando pulsas el hyperEnlace
         hyperSignUP.setOnAction(this::signUp);
-        stage.setOnCloseRequest(this::windowClose);
+        //stage.setOnCloseRequest(this::windowClose);
     }
 
     /**
@@ -89,7 +89,7 @@ public class SignInController {
      */
     @FXML
     private void signIN(ActionEvent event) {
-          //usuario ficticio hasta tener bd
+        //usuario ficticio hasta tener bd
         Signable signable = SignableFactory.getClientImplementation();
         User user = new User();
         user.setLogin(tfUser.getText());
@@ -125,9 +125,11 @@ public class SignInController {
             LOG.log(Level.SEVERE, "no hay conexiones");
         } catch (LoginNotFoundException ex) {
             lblError.setText(ex.getMessage());
+            tfUser.setStyle(" -fx-text-box-border: red ;");
             LOG.log(Level.SEVERE, "error ,el login no coincide con el de la bd");
         } catch (PasswordNotFoundException ex) {
             lblError.setText(ex.getMessage());
+            tfPassword.setStyle("-fx-text-box-border: red ;");
             LOG.log(Level.SEVERE, "Error,  el password no coincide con el de la bd");
         } catch (Exception ex) {
             lblError.setText("No se ha podido establecer conexión");
@@ -150,7 +152,7 @@ public class SignInController {
             //Creamos una nueva escena para la ventana SignIn
             Scene UserViewScene = new Scene(root);
             //creamos un nuevo escenario para la nueva ventana
-            Stage logout = new Stage();          
+            Stage logout = new Stage();
             //añadimos la escena en el stage
             logout.setScene(UserViewScene);
             //por defecto no podra redimensionarse
@@ -177,14 +179,14 @@ public class SignInController {
         btnSignIN.disableProperty().bind(tfUser.textProperty().isEmpty()
                 .or(tfPassword.textProperty().isEmpty()
                 ));
-        
-        
+
     }
-/**
- * pide una confirmacion para poder cerrar la  ventana.
- * @param event evento asociado al botón cerrar de la barra de
-título
- */
+
+    /**
+     * pide una confirmacion para poder cerrar la ventana.
+     *
+     * @param event evento asociado al botón cerrar de la barra de título
+     */
     private void windowClose(WindowEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Confirmacion");
