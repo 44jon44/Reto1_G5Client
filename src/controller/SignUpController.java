@@ -99,6 +99,10 @@ public class SignUpController {
     private boolean tfFullNameIsValid = false;
     private boolean tfPasswordIsValid = false;
     private boolean tfRepeatPasswordIsValid = false;
+    private boolean hasANumber;
+    private boolean hasAnLowerLetter;
+    private boolean hasAnUppderLetter;
+    private boolean hasASpecilChar;
 
     /**
      * Método que carga el estado inicial de ViewSignUp
@@ -130,7 +134,6 @@ public class SignUpController {
         hyperSignIn.setOnAction(this::signIn);
     }
 
-    
     @FXML
     private void signIn(ActionEvent event) {
         try
@@ -284,7 +287,7 @@ public class SignUpController {
     }
 
     private boolean validateTfEmail(String email) {
-        return Pattern.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-@][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$",email); 
+        return Pattern.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-@][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", email);
     }
 
     private boolean validateTfFullName(String fullName) {
@@ -426,6 +429,20 @@ public class SignUpController {
         } else if (password.trim().length() < 8)
         {
             lblErrorPassword.setText("Longitud mínima de 8");
+        } else if (password.trim().length() >= 8 && !password.matches("[0-9]+"))
+        {
+
+            lblErrorPassword.setText("Falta número");
+
+        } else if (password.trim().length() >= 8 && !password.matches("[@()/*#$%^&+=]"))
+        {
+            lblErrorPassword.setText("Falta caracter especial");
+        } else if (password.trim().length() >= 8 && !password.matches("[A-Z]+"))
+        {
+            lblErrorPassword.setText("Falta una letra mayúscula");
+        } else if (password.trim().length() >= 8 && !password.matches("[a-z]+"))
+        {
+            lblErrorPassword.setText("Falta una letra minúscula");
         } else
         {
             lblErrorPassword.setText("Contraseña inválida");
