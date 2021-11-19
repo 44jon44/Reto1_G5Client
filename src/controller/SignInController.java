@@ -46,15 +46,15 @@ public class SignInController {
     private PasswordField tfPassword;
     // botón que inicia la sesión
     @FXML
-    private Button btnSignIn;
+    private Button btnSignIN;
     // un  label que visualiza los diferentes errores
     @FXML
-    private AnchorPane panelSignIn;
+    private AnchorPane panelSignIN;
     @FXML
     private Label lblError;
     //un hyperlink que llama a la ventana viewSingUp
     @FXML
-    private Hyperlink hyperSignUp;
+    private Hyperlink hyperSignUP;
 
     //getter y setter del state SingIn
     public Stage getSignInStage() {
@@ -70,14 +70,15 @@ public class SignInController {
         //Llamamos al metodo que se encarga del comportamiento del botón
         disableSignInBtn();
         //llamar al método de iniciar sesión cuando pulsas el botón
-        btnSignIn.setOnAction(this::signIn);
+        btnSignIN.setOnAction(this::signIn);
         //llamar al método de  resgistrarse cuando pulsas el hiperenlace
-        hyperSignUp.setOnAction(this::signUp);
+        hyperSignUP.setOnAction(this::signUp);
+        //handler del evento de cerrar la ventana desde el botón cerrar de la barra de título
         stage.setOnCloseRequest(this::windowClose);
     }
 
     /**
-     * El usuario podrá iniciar la sesión
+     * Handler del evento de pulsar el botón de "Iniciar Sesión"
      *
      * @param event el evento de activación del botón
      */
@@ -113,17 +114,17 @@ public class SignInController {
             // a la ventana UserView
             controler.initUser(usuarioServidor);
             signInStage.show();
-            panelSignIn.getScene().getWindow().hide();
+            panelSignIN.getScene().getWindow().hide();
             
         } catch (ConnectionNotAvailableException ex) {
             lblError.setText(ex.getMessage());
-            LOG.log(Level.SEVERE, "Error, no hay conexiones disponibles");
+            LOG.log(Level.SEVERE, ex.getMessage());
         } catch (LoginNotFoundException ex) {
             lblError.setText(ex.getMessage());
-            LOG.log(Level.SEVERE, "El usuario introducido no existe");
+            LOG.log(Level.SEVERE, ex.getMessage());
         } catch (PasswordNotFoundException ex) {
             lblError.setText(ex.getMessage());
-            LOG.log(Level.SEVERE, "La contraseña no es correcta");
+            LOG.log(Level.SEVERE, ex.getMessage());
         } catch (Exception ex) {
             lblError.setText("No se ha podido establecer conexión");
             LOG.log(Level.SEVERE, "No se ha podido establecer conexión");
@@ -131,7 +132,7 @@ public class SignInController {
     }
 
     /**
-     * Abre una ventana modal de signUp para que el usuario se pueda registrar
+     * Abre la ventana ViewSignUp para que el usuario se pueda registrar
      *
      * @param event el evento de activación del enlace
      */
@@ -157,35 +158,39 @@ public class SignInController {
             //mostramos la ventana modal mientras la actual se queda esperando
             logout.show();
             //cerramos la ventana
-            panelSignIn.getScene().getWindow().hide();
+            panelSignIN.getScene().getWindow().hide();
         } catch (IOException ex) {
            LOG.log(Level.SEVERE, "Se ha producido un error al cargar el fichero FXML");
         }
     }
 
     /**
-     * El método disableSigInBtn se encargará de comportamiento del botón de "Iniciar Sesión".
+     * Handler del evento de pulsar el botón "Iniciar Sesión".
      * El botón por defecto estará deshabilitado mientras no se informen los campos "Usuario" y "Contraseña"
      */
     private void disableSignInBtn() {
         LOG.info("El botón está desabilitado hasta que se informen los campos");
-        btnSignIn.disableProperty().bind(tfUser.textProperty().isEmpty()
+        btnSignIN.disableProperty().bind(tfUser.textProperty().isEmpty()
                 .or(tfPassword.textProperty().isEmpty()
                 ));
     }
-    
+    /**
+     * Handler del evento de cerrar la ventana desde el botón cerrar de la barra de título
+     * @param event Evento de pulsar el botón cerrara de la barra de título
+     */
     private void windowClose(WindowEvent event){
-        LOG.info("Se ha pulsado el botón cerrar de la ventana");
+        LOG.info("Se ha pulsado el botón cerrar de la barra de título de la ventana");
+        //creamos una alerta de tipo confirmación
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText("Confirmación");
+        alert.setTitle(("Confirmación"));
         alert.setContentText("¿Desea cerrar la ventana?");
         Optional<ButtonType> result = alert.showAndWait();
-
-        if (ButtonType.OK != result.get()) {
-            event.consume();
-        } else {
-            LOG.info("Se ha cerrado la ventana ViewSignIN");
+        //si se ha pulsado el botón de aceptar cerramos la ventana
+        if (result.get() == ButtonType.YES) {
+            LOG.info("Cerrando ventana ViewSignIn");
+            event.consume(); 
+        }else{
+            LOG.info("Se ha cancelado el cierre de la ventana ViewSignIN");
         }
-    }
-    
+    }   
 }

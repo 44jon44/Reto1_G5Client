@@ -10,7 +10,7 @@
 
 <VBox prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SignInController">
     <children>
-        <AnchorPane fx:id="panelSignIn" maxHeight="-1.0" maxWidth="-1.0" prefHeight="480.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
+        <AnchorPane fx:id="panelSignIN" maxHeight="-1.0" maxWidth="-1.0" prefHeight="480.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
             <children>
                 <Label fx:id="lblError" focusTraversable="false" layoutX="110.0" layoutY="36.0" prefHeight="111.0" prefWidth="414.0" />
                 <Label layoutX="96.0" layoutY="166.0" prefHeight="27.0" prefWidth="74.0" text="Usuario :" />
@@ -18,8 +18,8 @@
                 <Label layoutX="96.0" layoutY="226.0" prefHeight="27.0" prefWidth="98.0" text="Contraseña : " />
                 <PasswordField fx:id="tfPassword" focusTraversable="true" layoutX="182.0" layoutY="226.0" prefHeight="26.0" prefWidth="246.0" />
                 <Label focusTraversable="false" layoutX="129.0" layoutY="287.0" prefHeight="18.0" prefWidth="190.0" text="¿Aun no te has registrado? " />
-                <Hyperlink fx:id="hyperSignUp" focusTraversable="false" layoutX="305.0" layoutY="283.0" onAction="#signUp" prefHeight="26.0" prefWidth="120.0" text="Regístrate" />
-                <Button fx:id="btnSignIn" focusTraversable="true" layoutX="174.0" layoutY="327.0" mnemonicParsing="false" onAction="#signIn" prefHeight="34.0" prefWidth="259.0" text="Iniciar Sesión" />
+                <Hyperlink fx:id="hyperSignUP" focusTraversable="false" layoutX="305.0" layoutY="283.0" onAction="#signUp" prefHeight="26.0" prefWidth="120.0" text="Regístrate" />
+                <Button fx:id="btnSignIN" focusTraversable="true" layoutX="174.0" layoutY="327.0" mnemonicParsing="false" onAction="#signIn" prefHeight="34.0" prefWidth="259.0" text="Iniciar Sesión" />
             </children>
         </AnchorPane>
     </children>

@@ -130,11 +130,12 @@ public class SignUpController {
         hyperSignIn.setOnAction(this::signIn);
     }
 
+    
     @FXML
     private void signIn(ActionEvent event) {
         try
         {
-            LOG.info("Entrando en la ventana ViewSignIn");
+            LOG.info("Se ha pulsado el hiperenlace Login");
             //getResource tienes que añadir la ruta de la ventana que quieres iniciar.
             FXMLLoader signUp = new FXMLLoader(getClass().getResource("/view/ViewSignIn.fxml"));
             Parent root;
@@ -159,10 +160,7 @@ public class SignUpController {
             stage.hide();
         } catch (IOException ex)
         {
-            LOG.log(Level.SEVERE, "Se ha producido un error de lectura/escritura");
-        } catch (IllegalStateException ex)
-        {
-            LOG.log(Level.SEVERE, "No se ha podido cargar la vista");
+            LOG.log(Level.SEVERE, "Se ha producido un error al cargar el fichero FXML");
         }
     }
 
@@ -179,21 +177,21 @@ public class SignUpController {
                 boolean signUpCorrect = signable.signUp(userSignUp);
                 if (signUpCorrect)
                 {
-                    LOG.info("Entrando en la ventana de ViewSignIn");
+                    LOG.info("Volviendo a la venta ViewSignIn");
                     signIn(event);
                 }
             } catch (LoginExistException ex)
             {
                 lblError.setText(ex.getMessage());
-                LOG.log(Level.SEVERE, "El usuario ya existe");
+                LOG.log(Level.SEVERE, ex.getMessage());
             } catch (ConnectionNotAvailableException ex)
             {
                 lblError.setText(ex.getMessage());
-                LOG.log(Level.SEVERE, "Error, no hay conexiones disponibles");
+                LOG.log(Level.SEVERE, ex.getMessage());
             } catch (Exception ex)
             {
-                lblError.setText("Se ha producido un error");
-                LOG.log(Level.SEVERE, "Se ha producido un error");
+                lblError.setText("No se ha podido establecer conexión");
+                LOG.log(Level.SEVERE, "No se ha podido establecer conexión");
             }
         } else
         {
@@ -286,7 +284,7 @@ public class SignUpController {
     }
 
     private boolean validateTfEmail(String email) {
-        return Pattern.matches("\\b[a-zA-Z0-9_+-]+(?:.[a-zA-Z0-9_+-]+)*@(?:[a-zA-Z0-9-]+.)+[a-zA-Z]{2,6}\\b", email);
+        return Pattern.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-@][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$",email); 
     }
 
     private boolean validateTfFullName(String fullName) {
