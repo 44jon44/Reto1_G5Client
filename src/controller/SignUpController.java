@@ -99,10 +99,10 @@ public class SignUpController {
     private boolean tfFullNameIsValid = false;
     private boolean tfPasswordIsValid = false;
     private boolean tfRepeatPasswordIsValid = false;
-    private boolean hasANumber;
-    private boolean hasAnLowerLetter;
-    private boolean hasAnUppderLetter;
-    private boolean hasASpecilChar;
+    private boolean hasANumber = false;
+    private boolean hasAnLowerLetter = false;
+    private boolean hasAnUppderLetter = false;
+    private boolean hasASpecialChar = false;
 
     /**
      * Método que carga el estado inicial de ViewSignUp
@@ -336,6 +336,7 @@ public class SignUpController {
             lblErrorRepeatPassword.setText("");
             tfPassword.setStyle("-fx-text-inner-color: black;");
         }
+        showlblErrorPasswordMessages(tfPassword.getText());
     }
 
     private void tfFullNameTextChanged(ObservableValue observable, String oldValue, String newValue) {
@@ -429,23 +430,28 @@ public class SignUpController {
         } else if (password.trim().length() < 8)
         {
             lblErrorPassword.setText("Longitud mínima de 8");
-        } else if (password.trim().length() >= 8 && !password.matches("[0-9]+"))
+        } else if (password.trim().length() >= 8)
         {
+            hasANumber = Pattern.matches(".*[0-9]{1,}.*", password);
+            hasAnLowerLetter = Pattern.matches(".*[a-z]{1,}.*", password);
+            hasAnUppderLetter = Pattern.matches(".*[A-Z]{1,}.*", password);
+            hasASpecialChar = Pattern.matches(".*[@()/*#$%^&+=]{1,}.*", password);
 
-            lblErrorPassword.setText("Falta número");
-
-        } else if (password.trim().length() >= 8 && !password.matches("[@()/*#$%^&+=]"))
-        {
-            lblErrorPassword.setText("Falta caracter especial");
-        } else if (password.trim().length() >= 8 && !password.matches("[A-Z]+"))
-        {
-            lblErrorPassword.setText("Falta una letra mayúscula");
-        } else if (password.trim().length() >= 8 && !password.matches("[a-z]+"))
-        {
-            lblErrorPassword.setText("Falta una letra minúscula");
-        } else
-        {
-            lblErrorPassword.setText("Contraseña inválida");
+            if (!hasAnLowerLetter)
+            {
+                lblErrorPassword.setText("Falta una letra minúscula");
+            }else if (!hasAnUppderLetter)
+            {
+                lblErrorPassword.setText("Falta una letra mayúscula");
+            }else if (!hasASpecialChar)
+            {
+                lblErrorPassword.setText("Falta un caracter especial");
+            }else if (!hasANumber)
+            {
+                lblErrorPassword.setText("Falta número");
+            }else{
+                lblErrorPassword.setText("");
+            }
         }
     }
 
