@@ -295,7 +295,7 @@ public class SignUpController {
     }
 
     private boolean validateTfPassword(String password) {
-        return Pattern.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@()/*#$%^&+=])(?=\\S+$).{8,}$", password);
+        return Pattern.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@()/*#$%^&+=!¡¿?])(?=\\S+$).{8,}$", password);
     }
 
     private boolean validFields() {
@@ -435,7 +435,7 @@ public class SignUpController {
             hasANumber = Pattern.matches(".*[0-9]{1,}.*", password);
             hasAnLowerLetter = Pattern.matches(".*[a-z]{1,}.*", password);
             hasAnUppderLetter = Pattern.matches(".*[A-Z]{1,}.*", password);
-            hasASpecialChar = Pattern.matches(".*[@()/*#$%^&+=]{1,}.*", password);
+            hasASpecialChar = Pattern.matches(".*[@()/*#$%^&+=!¡¿?]{1,}.*", password);
 
             if (!hasAnLowerLetter)
             {
